@@ -22,12 +22,12 @@ export function DecorativeSideImages() {
     <>
       {/* Mobile: repetición vertical para continuidad en todo el lateral */}
       <div
-        className="fixed left-0 top-0 z-0 h-screen w-[88px] pointer-events-none sm:hidden"
+        className="fixed left-0 top-0 z-0 h-screen w-[64px] pointer-events-none sm:hidden"
         aria-hidden
         style={mobileBgStyle(LEFT_IMAGE, "left")}
       />
       <div
-        className="fixed right-0 top-0 z-0 h-screen w-[88px] pointer-events-none sm:hidden"
+        className="fixed right-0 top-0 z-0 h-screen w-[64px] pointer-events-none sm:hidden"
         aria-hidden
         style={mobileBgStyle(RIGHT_IMAGE, "right")}
       />
