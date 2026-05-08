@@ -15,9 +15,9 @@ const FAQ_ITEMS = [
       "Un autobús privado nos llevará desde la Iglesia al lugar del banquete. El autobús saldrá a las 13:15 desde la Avenida de Cervantes, 16 (dos minutos andando desde la Iglesia).",
   },
   {
-    question: "¿Hay alguna recomendación de vestimenta?",
+    question: "¿Habrá autobuses de vuelta desde el banquete?",
     answer:
-      "Nos encantará veros elegantes y cómodos para disfrutar juntos de un día muy especial.",
+      "Sí, saldrán autobuses de vuelta desde el banquete a las 20:00 y a la hora que termine la fiesta.",
   },
 ] as const;
 

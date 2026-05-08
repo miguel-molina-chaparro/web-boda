@@ -49,6 +49,8 @@ export function RSVPSection() {
       guests: [
         {
           name: "",
+          isChild: false,
+          childMealChoice: null,
           hasDietaryRestrictions: null,
           dietaryRestrictions: {
             glutenFree: false,
@@ -75,6 +77,8 @@ export function RSVPSection() {
   useEffect(() => {
     if (attendance !== "no") return;
     guests.forEach((_, index) => {
+      setValue(`guests.${index}.isChild`, false, { shouldValidate: false });
+      setValue(`guests.${index}.childMealChoice`, null, { shouldValidate: false });
       setValue(`guests.${index}.hasDietaryRestrictions`, null, { shouldValidate: false });
       setValue(
         `guests.${index}.dietaryRestrictions`,
@@ -128,17 +132,23 @@ export function RSVPSection() {
     try {
       const cleanedGuests = data.guests.map((guest) => {
         const name = guest.name.trim();
+        const isChild = guest.isChild;
+        const childMealChoice = isChild ? guest.childMealChoice : null;
         const hasDietaryRestrictions =
           data.asistira === "si" ? guest.hasDietaryRestrictions : "no";
         if (hasDietaryRestrictions === "no") {
           return {
             name,
+            isChild,
+            childMealChoice,
             hasDietaryRestrictions: "no" as const,
             dietaryRestrictions: null,
           };
         }
         return {
           name,
+          isChild,
+          childMealChoice,
           hasDietaryRestrictions: "si" as const,
           dietaryRestrictions: {
             glutenFree: guest.dietaryRestrictions.glutenFree,
@@ -276,6 +286,7 @@ export function RSVPSection() {
                 </div>
                 {fields.map((field, index) => {
                   const guest = guests[index];
+                  const isChild = guest?.isChild === true;
                   const hasRestrictions = guest?.hasDietaryRestrictions === "si";
                   const guestName = guest?.name?.trim();
                   const dietaryQuestion = guestName
@@ -314,6 +325,69 @@ export function RSVPSection() {
                           </p>
                         )}
                       </div>
+
+                      {index > 0 && (
+                        <div className="space-y-2">
+                          <label className="flex cursor-pointer items-center gap-2">
+                            <input
+                              type="checkbox"
+                              className="peer sr-only"
+                              {...register(`guests.${index}.isChild`, {
+                                onChange: (event) => {
+                                  if (!event.target.checked) {
+                                    setValue(`guests.${index}.childMealChoice`, null, {
+                                      shouldValidate: true,
+                                    });
+                                  }
+                                },
+                              })}
+                            />
+                            <span className="rsvp-checkbox-box h-4 w-4 shrink-0 rounded border-2 border-[var(--border-soft)] bg-[var(--background-card)] transition-colors peer-checked:border-[var(--text-primary)] peer-checked:bg-[var(--text-primary)]" />
+                            <span className="text-sm text-[var(--text-primary)]">
+                              {rsvpTexts.childGuestLabel}
+                            </span>
+                          </label>
+
+                          {isChild && (
+                            <div className="space-y-3 rounded-md border border-[var(--border-soft)]/70 bg-[var(--background-card)] p-3">
+                              <label className="block text-sm font-medium text-[var(--text-primary)]">
+                                {rsvpTexts.childMenuQuestion}
+                              </label>
+                              <div className="flex flex-col gap-2 sm:flex-row sm:gap-6">
+                                <label className="flex cursor-pointer items-center gap-2">
+                                  <input
+                                    type="radio"
+                                    value="kids_menu"
+                                    className="peer sr-only"
+                                    {...register(`guests.${index}.childMealChoice`)}
+                                  />
+                                  <span className="h-4 w-4 shrink-0 rounded-full border-2 border-[var(--border-soft)] transition-colors peer-checked:border-[var(--text-primary)] peer-checked:bg-[var(--text-primary)]" />
+                                  <span className="text-sm text-[var(--text-primary)]">
+                                    {rsvpTexts.childMenuKids}
+                                  </span>
+                                </label>
+                                <label className="flex cursor-pointer items-center gap-2">
+                                  <input
+                                    type="radio"
+                                    value="own_food"
+                                    className="peer sr-only"
+                                    {...register(`guests.${index}.childMealChoice`)}
+                                  />
+                                  <span className="h-4 w-4 shrink-0 rounded-full border-2 border-[var(--border-soft)] transition-colors peer-checked:border-[var(--text-primary)] peer-checked:bg-[var(--text-primary)]" />
+                                  <span className="text-sm text-[var(--text-primary)]">
+                                    {rsvpTexts.childMenuOwn}
+                                  </span>
+                                </label>
+                              </div>
+                              {errors.guests?.[index]?.childMealChoice && (
+                                <p className="rsvp-error text-xs text-[var(--text-muted)]">
+                                  {errors.guests[index]?.childMealChoice?.message}
+                                </p>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      )}
 
                       {shouldShowDietary && (
                         <>
@@ -440,6 +514,8 @@ export function RSVPSection() {
                     onClick={() =>
                       append({
                         name: "",
+                        isChild: false,
+                        childMealChoice: null,
                         hasDietaryRestrictions: null,
                         dietaryRestrictions: {
                           glutenFree: false,

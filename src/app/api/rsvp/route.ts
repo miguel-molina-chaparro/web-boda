@@ -16,6 +16,8 @@ type DietaryRestrictions = {
 
 type GuestInput = {
   name?: string | null;
+  isChild?: boolean | null;
+  childMealChoice?: string | null;
   hasDietaryRestrictions?: string | boolean | null;
   dietaryRestrictions?: DietaryRestrictions;
 };
@@ -31,6 +33,8 @@ type RsvpInput = {
 
 type NormalizedGuest = {
   name: string;
+  isChild: boolean;
+  childMealChoice: "kids_menu" | "own_food" | null;
   hasDietaryRestrictions: boolean;
   allergies: string[];
   otherRestrictions: string;
@@ -66,6 +70,13 @@ function isValidEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
+function toChildMealChoice(value: unknown): "kids_menu" | "own_food" | null {
+  if (typeof value !== "string") return null;
+  const normalized = value.trim().toLowerCase();
+  if (normalized === "kids_menu" || normalized === "own_food") return normalized;
+  return null;
+}
+
 function normalizePayload(input: RsvpInput): NormalizationResult {
   const attendance = toAttendance(input.attendance ?? input.asistira);
   if (!attendance) {
@@ -80,10 +91,17 @@ function normalizePayload(input: RsvpInput): NormalizationResult {
     return { ok: false, error: "El máximo permitido es 6 invitados." };
   }
 
+  let hasInvalidChildMealChoice = false;
   const guests = guestsRaw
     .map((guest): NormalizedGuest | null => {
       const name = typeof guest?.name === "string" ? guest.name.trim() : "";
       if (!name) return null;
+      const isChild = Boolean(guest?.isChild);
+      const childMealChoice = isChild ? toChildMealChoice(guest?.childMealChoice) : null;
+      if (isChild && !childMealChoice) {
+        hasInvalidChildMealChoice = true;
+        return null;
+      }
 
       const hasDietaryRestrictions =
         attendance === "yes" ? toBoolean(guest?.hasDietaryRestrictions) : false;
@@ -113,6 +131,8 @@ function normalizePayload(input: RsvpInput): NormalizationResult {
 
       return {
         name,
+        isChild,
+        childMealChoice,
         hasDietaryRestrictions,
         allergies,
         otherRestrictions,
@@ -122,6 +142,12 @@ function normalizePayload(input: RsvpInput): NormalizationResult {
 
   if (guests.length === 0) {
     return { ok: false, error: "Debes indicar al menos un invitado con nombre." };
+  }
+  if (hasInvalidChildMealChoice) {
+    return {
+      ok: false,
+      error: "Para cada invitado niño debes indicar su opción de comida.",
+    };
   }
 
   const contactEmail = typeof input.email === "string" ? input.email.trim() : "";
@@ -152,6 +178,14 @@ function getGuestRestrictionsText(guest: NormalizedGuest, attendance: "yes" | "n
   return [optionsText, guest.otherRestrictions].filter(Boolean).join(" | ") || "Sin restricciones indicadas";
 }
 
+function getGuestChildMealText(guest: NormalizedGuest, attendance: "yes" | "no"): string {
+  if (attendance === "no") return "No aplica (no asistirá)";
+  if (!guest.isChild) return "No";
+  if (guest.childMealChoice === "kids_menu") return "Sí, comerá menú de niños";
+  if (guest.childMealChoice === "own_food") return "Sí, llevará su propia comida";
+  return "Sí";
+}
+
 function getGuestAttendanceLabel(attendance: "yes" | "no"): string {
   return attendance === "yes" ? "Incluido en la confirmación (asistirá)" : "No asistirá";
 }
@@ -162,11 +196,13 @@ function buildEmailHtml(data: NormalizedRsvp & { sentAt: string }): string {
   const guestBlocks = data.guests
     .map((guest, index) => {
       const restrictions = getGuestRestrictionsText(guest, data.attendance);
+      const childMeal = getGuestChildMealText(guest, data.attendance);
       const guestAttendance = getGuestAttendanceLabel(data.attendance);
       return `
       <div style="border: 1px solid #eee; border-radius: 10px; padding: 12px 14px; margin-top: ${index === 0 ? "0" : "10px"};">
         <p style="margin: 0 0 6px; font-weight: 600; color: #5c3d4a;">Invitado ${index + 1}: ${escapeHtml(guest.name)}</p>
         <p style="margin: 0 0 4px;"><strong>Estado:</strong> ${escapeHtml(guestAttendance)}</p>
+        <p style="margin: 0 0 4px;"><strong>Invitado niño:</strong> ${escapeHtml(childMeal)}</p>
         <p style="margin: 0;"><strong>Alergias / restricciones:</strong> ${escapeHtml(restrictions)}</p>
       </div>`;
     })
@@ -199,10 +235,12 @@ function buildEmailText(data: NormalizedRsvp & { sentAt: string }): string {
   const namesSummary = data.guests.map((g) => g.name).join(", ");
   const guestLines = data.guests.map((guest, index) => {
     const restrictions = getGuestRestrictionsText(guest, data.attendance);
+    const childMeal = getGuestChildMealText(guest, data.attendance);
     const guestAttendance = getGuestAttendanceLabel(data.attendance);
     return [
       `Invitado ${index + 1}: ${guest.name}`,
       `  Estado: ${guestAttendance}`,
+      `  Invitado niño: ${childMeal}`,
       `  Alergias / restricciones: ${restrictions}`,
     ].join("\n");
   });

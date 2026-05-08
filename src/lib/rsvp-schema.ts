@@ -31,6 +31,8 @@ const DEFAULT_DIETARY_RESTRICTIONS = {
 
 const guestSchema = z.object({
   name: z.string().trim().min(1, "Introduce el nombre del invitado"),
+  isChild: z.boolean().default(false),
+  childMealChoice: z.enum(["kids_menu", "own_food"]).nullable().default(null),
   hasDietaryRestrictions: z.enum(["si", "no"]).nullable().default(null),
   dietaryRestrictions: dietaryRestrictionsSchema.default(DEFAULT_DIETARY_RESTRICTIONS),
 });
@@ -50,6 +52,14 @@ export const rsvpSchema = z.object({
   if (form.asistira === "no") return;
 
   form.guests.forEach((guest, index) => {
+    if (guest.isChild && !guest.childMealChoice) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Indica si comerá menú de niños o llevará su propia comida.",
+        path: ["guests", index, "childMealChoice"],
+      });
+    }
+
     if (guest.hasDietaryRestrictions === null) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
