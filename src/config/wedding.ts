@@ -46,7 +46,7 @@ export const hero = {
   weAreGettingMarried: "¡Nos casamos!",
   dateLine: heroDateLine,
   year: heroYear,
-  ctaLabel: "Acompañanos en nuestro gran día",
+  ctaLabel: "Desliza y vívelo con nosotros",
   ctaAriaLabel: "Ir a cuenta atrás",
 } as const;
 
@@ -103,8 +103,8 @@ export const scheduleEvents: ReadonlyArray<{
 
 /** Textos de la sección lugar */
 export const locationTexts = {
-  title: "El lugar",
-  subtitle: "Donde celebraremos nuestro amor",
+  title: "La ceremonia",
+  subtitle: "Donde diremos sí, quiero",
   openInMaps: "Abrir en Maps",
   addToCalendar: "Añadir al calendario",
 } as const;
@@ -132,8 +132,8 @@ export const conviteMap = {
 
 /** Textos de la sección convite */
 export const conviteTexts = {
-  title: "El convite",
-  subtitle: "Donde celebraremos el banquete",
+  title: "La celebración",
+  subtitle: "Donde compartiremos el banquete y la fiesta",
   openInMaps: locationTexts.openInMaps,
   addToCalendar: locationTexts.addToCalendar,
 } as const;
