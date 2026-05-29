@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { Car, Bus, Undo2, Footprints } from "lucide-react";
 
@@ -33,7 +33,12 @@ const FAQ_ITEMS = [
 
 export function FaqSection() {
   const ref = useRef<HTMLDivElement>(null);
+  const [flippedCards, setFlippedCards] = useState<Record<number, boolean>>({});
   const isInView = useInView(ref, { once: true, margin: "-60px 0px -60px 0px" });
+
+  const toggleCard = (index: number) => {
+    setFlippedCards((prev) => ({ ...prev, [index]: !prev[index] }));
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -64,6 +69,7 @@ export function FaqSection() {
         <p className="mx-auto mt-4 max-w-2xl text-sm sm:text-base leading-relaxed text-[var(--text-muted)]">
           Queremos que ese día lo único en lo que tengáis que pensar sea en disfrutar. Por eso, hemos
           reunido aquí las respuestas a las dudas más habituales para que todo fluya sin preocupaciones.
+          Pulsad en cada pregunta y descubriréis la respuesta al instante.
         </p>
 
         <motion.div
@@ -72,32 +78,50 @@ export function FaqSection() {
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          {FAQ_ITEMS.map((item) => (
+          {FAQ_ITEMS.map((item, index) => (
             <motion.div
               key={item.question}
               variants={itemVariants}
-              className="rounded-lg border border-[var(--border-soft)]/70 bg-[var(--background-card)] px-4 py-4 sm:p-5 md:p-6"
+              style={{ perspective: "1400px" }}
             >
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-4">
-                <span
-                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
-                  style={{
-                    backgroundColor: "rgba(205, 191, 230, 0.4)",
-                    color: "var(--text-primary)",
-                  }}
-                  aria-hidden
+              <button
+                type="button"
+                onClick={() => toggleCard(index)}
+                className="focus-ring relative block w-full rounded-lg text-left"
+                aria-pressed={Boolean(flippedCards[index])}
+                aria-label={`Mostrar ${flippedCards[index] ? "pregunta" : "respuesta"}: ${item.question}`}
+              >
+                <div
+                  className="relative min-h-[320px] sm:min-h-[280px] md:min-h-[250px] transition-transform duration-700 [transform-style:preserve-3d]"
+                  style={{ transform: flippedCards[index] ? "rotateY(180deg)" : "rotateY(0deg)" }}
                 >
-                  <item.icon className="h-5 w-5" strokeWidth={1.8} />
-                </span>
-                <div className="w-full min-w-0">
-                  <h3 className="text-base sm:text-lg font-semibold text-[var(--text-primary)]">
-                    {item.question}
-                  </h3>
-                  <p className="mt-2 text-[15px] sm:text-base leading-relaxed text-[var(--text-muted)]">
-                    {item.answer}
-                  </p>
+                  <div className="absolute inset-0 rounded-lg border border-[var(--border-soft)]/70 bg-[var(--background-card)] px-4 py-5 sm:px-5 sm:py-6 [backface-visibility:hidden]">
+                    <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
+                      <span
+                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full"
+                        style={{
+                          backgroundColor: "rgba(205, 191, 230, 0.4)",
+                          color: "var(--text-primary)",
+                        }}
+                        aria-hidden
+                      >
+                        <item.icon className="h-5 w-5" strokeWidth={1.8} />
+                      </span>
+                      <h3 className="text-base sm:text-lg font-semibold text-[var(--text-primary)]">
+                        {item.question}
+                      </h3>
+                    </div>
+                  </div>
+
+                  <div className="absolute inset-0 rounded-lg border border-[var(--border-soft)]/70 bg-[var(--background-card)] px-4 py-5 sm:px-5 sm:py-6 [backface-visibility:hidden] [transform:rotateY(180deg)]">
+                    <div className="flex h-full flex-col justify-center">
+                      <p className="text-[15px] sm:text-base leading-relaxed text-[var(--text-muted)] text-center sm:text-left">
+                        {item.answer}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </button>
             </motion.div>
           ))}
         </motion.div>
