@@ -14,20 +14,20 @@ export function DecorativeSideImages() {
     backgroundImage: `url("${url}")`,
     backgroundRepeat: "repeat-y" as const,
     backgroundPosition: `${side} top`,
-    backgroundSize: "100% auto",
+    backgroundSize: "104px auto",
     opacity: OPACITY,
   });
 
   return (
     <>
-      {/* Mobile: se adapta al alto de pantalla y repite en vertical si falta altura */}
+      {/* Mobile: tamaño fijo + repetición vertical */}
       <div
-        className="fixed left-0 top-0 z-20 h-[100dvh] w-[92px] pointer-events-none sm:hidden"
+        className="fixed left-0 -top-12 z-20 h-[calc(100dvh+6rem)] w-[104px] pointer-events-none sm:hidden"
         aria-hidden
         style={mobileBgStyle(LEFT_IMAGE, "left")}
       />
       <div
-        className="fixed right-0 top-0 z-20 h-[100dvh] w-[92px] pointer-events-none sm:hidden"
+        className="fixed right-0 -top-12 z-20 h-[calc(100dvh+6rem)] w-[104px] pointer-events-none sm:hidden"
         aria-hidden
         style={mobileBgStyle(RIGHT_IMAGE, "right")}
       />
