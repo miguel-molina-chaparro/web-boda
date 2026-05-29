@@ -59,13 +59,13 @@ export function VenueSection({
 
           <div className="flex flex-col items-center px-4 py-6 sm:px-6 sm:py-7 md:px-8 md:py-8">
             <h3
-              className="text-xl md:text-2xl text-[var(--text-primary)] text-center font-serif max-w-xl"
+              className="text-lg sm:text-xl md:text-2xl text-[var(--text-primary)] text-center font-serif max-w-xl"
               style={{ fontFamily: "var(--font-serif)" }}
             >
               {venue.name}
             </h3>
-            <p className="mt-2 text-sm text-[var(--text-muted)]">{venue.city}</p>
-            <div className="mt-3 flex items-center gap-2 text-sm text-[var(--text-muted)]">
+            <p className="mt-2 text-xs sm:text-sm text-[var(--text-muted)]">{venue.city}</p>
+            <div className="mt-3 flex items-center gap-2 text-xs sm:text-sm text-[var(--text-muted)]">
               <Clock className="h-4 w-4 shrink-0" strokeWidth={1.8} aria-hidden />
               <span>{venue.schedule}</span>
             </div>
