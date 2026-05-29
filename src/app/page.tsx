@@ -1,4 +1,5 @@
 import { HeroSection } from "@/components/sections/HeroSection";
+import { VideoSection } from "@/components/sections/VideoSection";
 import { CountdownSection } from "@/components/sections/CountdownSection";
 import { LocationSection } from "@/components/sections/LocationSection";
 import { BanquetSection } from "@/components/sections/BanquetSection";
@@ -18,6 +19,10 @@ export default function Home() {
       <DecorativeSideFlowers />
       <main className="relative z-10 min-h-screen">
         <HeroSection />
+        <DecorativeDivider />
+        <SectionReveal>
+          <VideoSection />
+        </SectionReveal>
         <DecorativeDivider />
         <SectionReveal>
           <CountdownSection />
