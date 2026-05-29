@@ -2,6 +2,12 @@
 
 import Image from "next/image";
 import { MapPin, Clock } from "lucide-react";
+import localFont from "next/font/local";
+
+const fontSacramento = localFont({
+  src: "../../fonts/Sacramento-Regular.ttf",
+  display: "swap",
+});
 
 export type VenueSectionProps = {
   sectionId: string;
@@ -33,7 +39,9 @@ export function VenueSection({
         >
           {title}
         </h2>
-        <p className="mt-2 text-sm text-[var(--text-muted)] font-sans">
+        <p
+          className={`${fontSacramento.className} mt-2 text-xl sm:text-xl md:text-2xl leading-relaxed text-[var(--text-muted)]`}
+        >
           {subtitle}
         </p>
 

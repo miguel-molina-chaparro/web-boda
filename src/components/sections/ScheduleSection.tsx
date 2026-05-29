@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import localFont from "next/font/local";
 import {
   MapPin,
   Heart,
@@ -12,6 +13,11 @@ import {
   Sparkles,
 } from "lucide-react";
 import { scheduleEvents, type ScheduleEventIconKey } from "@/config/wedding";
+
+const fontSacramento = localFont({
+  src: "../../fonts/Sacramento-Regular.ttf",
+  display: "swap",
+});
 
 const SCHEDULE_ICON_MAP: Record<ScheduleEventIconKey, typeof MapPin> = {
   mapPin: MapPin,
@@ -56,7 +62,9 @@ export function ScheduleSection() {
         >
           Timeline
         </h2>
-        <p className="mt-2 text-sm text-[var(--text-muted)] font-sans">
+        <p
+          className={`${fontSacramento.className} mt-2 text-xl sm:text-xl md:text-2xl leading-relaxed text-[var(--text-muted)]`}
+        >
           Nuestra celebración paso a paso
         </p>
 

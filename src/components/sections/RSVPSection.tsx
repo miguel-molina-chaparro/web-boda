@@ -5,6 +5,7 @@ import { useFieldArray, useForm, useWatch, type Resolver } from "react-hook-form
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion, useInView } from "framer-motion";
 import { Send, AlertTriangle, CheckCircle2, AlertCircle } from "lucide-react";
+import localFont from "next/font/local";
 import { rsvpSchema, type RsvpFormData, ALLERGY_OPTIONS } from "@/lib/rsvp-schema";
 import { rsvpTexts } from "@/config/wedding";
 
@@ -23,6 +24,11 @@ const ALLERGY_LABELS: Record<(typeof ALLERGY_OPTIONS)[number], string> = {
 const inputBase =
   "w-full rounded-md border bg-[var(--background-card)] px-4 py-3 text-[var(--text-primary)] placeholder:text-[var(--text-muted)]/70 focus:outline-none focus:ring-2 focus:ring-[var(--accent-rose)]/50 focus:border-[var(--accent-rose)] transition-colors";
 const inputBorder = "border-[var(--border-soft)]";
+
+const fontSacramento = localFont({
+  src: "../../fonts/Sacramento-Regular.ttf",
+  display: "swap",
+});
 
 export function RSVPSection() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -202,7 +208,9 @@ export function RSVPSection() {
         >
           {rsvpTexts.sectionTitle}
         </h2>
-        <p className="mt-2 text-sm text-[var(--text-muted)]">
+        <p
+          className={`${fontSacramento.className} mt-2 text-xl sm:text-xl md:text-2xl leading-relaxed text-[var(--text-muted)]`}
+        >
           {rsvpTexts.sectionSubtitle}
         </p>
 
