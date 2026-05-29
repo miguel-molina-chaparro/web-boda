@@ -10,27 +10,33 @@ const RIGHT_IMAGE = "/eucalyptus_right.png";
 const OPACITY = 0.6;
 
 export function DecorativeSideImages() {
-  const mobileBgStyle = (url: string, side: "left" | "right") => ({
-    backgroundImage: `url("${url}")`,
-    backgroundRepeat: "repeat-y" as const,
-    backgroundPosition: `${side} top`,
-    backgroundSize: "104px auto",
-    opacity: OPACITY,
-  });
-
   return (
     <>
-      {/* Mobile: tamaño fijo + repetición vertical */}
+      {/* Mobile: una sola imagen por lateral, sobredimensionada para cubrir cambios de viewport */}
       <div
-        className="fixed left-0 -top-12 z-20 h-[calc(100dvh+6rem)] w-[104px] pointer-events-none sm:hidden"
+        className="fixed left-0 -top-16 z-20 flex h-[calc(100dvh+8rem)] w-[112px] pointer-events-none items-start justify-start overflow-visible sm:hidden"
         aria-hidden
-        style={mobileBgStyle(LEFT_IMAGE, "left")}
-      />
+        style={{ opacity: OPACITY }}
+      >
+        <img
+          src={LEFT_IMAGE}
+          alt=""
+          className="h-full w-auto max-w-none object-contain object-left-top select-none"
+          draggable={false}
+        />
+      </div>
       <div
-        className="fixed right-0 -top-12 z-20 h-[calc(100dvh+6rem)] w-[104px] pointer-events-none sm:hidden"
+        className="fixed right-0 -top-16 z-20 flex h-[calc(100dvh+8rem)] w-[112px] pointer-events-none items-start justify-end overflow-visible sm:hidden"
         aria-hidden
-        style={mobileBgStyle(RIGHT_IMAGE, "right")}
-      />
+        style={{ opacity: OPACITY }}
+      >
+        <img
+          src={RIGHT_IMAGE}
+          alt=""
+          className="h-full w-auto max-w-none object-contain object-right-top select-none"
+          draggable={false}
+        />
+      </div>
 
       {/* Desktop/tablet: imagen única anclada al borde */}
       <div
