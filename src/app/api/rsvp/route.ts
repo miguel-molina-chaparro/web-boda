@@ -18,6 +18,7 @@ type GuestInput = {
   name?: string | null;
   isChild?: boolean | null;
   childMealChoice?: string | null;
+  willUsePrivateBus?: string | boolean | null;
   hasDietaryRestrictions?: string | boolean | null;
   dietaryRestrictions?: DietaryRestrictions;
 };
@@ -35,6 +36,7 @@ type NormalizedGuest = {
   name: string;
   isChild: boolean;
   childMealChoice: "kids_menu" | "own_food" | null;
+  willUsePrivateBus: boolean;
   hasDietaryRestrictions: boolean;
   allergies: string[];
   otherRestrictions: string;
@@ -92,6 +94,7 @@ function normalizePayload(input: RsvpInput): NormalizationResult {
   }
 
   let hasInvalidChildMealChoice = false;
+  let hasInvalidBusChoice = false;
   const guests = guestsRaw
     .map((guest): NormalizedGuest | null => {
       const name = typeof guest?.name === "string" ? guest.name.trim() : "";
@@ -102,6 +105,15 @@ function normalizePayload(input: RsvpInput): NormalizationResult {
         hasInvalidChildMealChoice = true;
         return null;
       }
+      const hasBusAnswer =
+        guest?.willUsePrivateBus === true ||
+        guest?.willUsePrivateBus === false ||
+        (typeof guest?.willUsePrivateBus === "string" && guest.willUsePrivateBus.trim().length > 0);
+      if (attendance === "yes" && !hasBusAnswer) {
+        hasInvalidBusChoice = true;
+        return null;
+      }
+      const willUsePrivateBus = attendance === "yes" ? toBoolean(guest?.willUsePrivateBus) : false;
 
       const hasDietaryRestrictions =
         attendance === "yes" ? toBoolean(guest?.hasDietaryRestrictions) : false;
@@ -133,6 +145,7 @@ function normalizePayload(input: RsvpInput): NormalizationResult {
         name,
         isChild,
         childMealChoice,
+        willUsePrivateBus,
         hasDietaryRestrictions,
         allergies,
         otherRestrictions,
@@ -147,6 +160,12 @@ function normalizePayload(input: RsvpInput): NormalizationResult {
     return {
       ok: false,
       error: "Para cada invitado niño debes indicar su opción de comida.",
+    };
+  }
+  if (hasInvalidBusChoice) {
+    return {
+      ok: false,
+      error: "Para cada invitado debes indicar si usará el autobús privado.",
     };
   }
 
@@ -186,6 +205,11 @@ function getGuestChildMealText(guest: NormalizedGuest, attendance: "yes" | "no")
   return "Sí";
 }
 
+function getGuestBusText(guest: NormalizedGuest, attendance: "yes" | "no"): string {
+  if (attendance === "no") return "No aplica (no asistirá)";
+  return guest.willUsePrivateBus ? "Sí" : "No";
+}
+
 function getGuestAttendanceLabel(attendance: "yes" | "no"): string {
   return attendance === "yes" ? "Incluido en la confirmación (asistirá)" : "No asistirá";
 }
@@ -197,11 +221,13 @@ function buildEmailHtml(data: NormalizedRsvp & { sentAt: string }): string {
     .map((guest, index) => {
       const restrictions = getGuestRestrictionsText(guest, data.attendance);
       const childMeal = getGuestChildMealText(guest, data.attendance);
+      const busUse = getGuestBusText(guest, data.attendance);
       const guestAttendance = getGuestAttendanceLabel(data.attendance);
       return `
       <div style="border: 1px solid #eee; border-radius: 10px; padding: 12px 14px; margin-top: ${index === 0 ? "0" : "10px"};">
         <p style="margin: 0 0 6px; font-weight: 600; color: #5c3d4a;">Invitado ${index + 1}: ${escapeHtml(guest.name)}</p>
         <p style="margin: 0 0 4px;"><strong>Estado:</strong> ${escapeHtml(guestAttendance)}</p>
+        <p style="margin: 0 0 4px;"><strong>Autobús privado:</strong> ${escapeHtml(busUse)}</p>
         <p style="margin: 0 0 4px;"><strong>Invitado niño:</strong> ${escapeHtml(childMeal)}</p>
         <p style="margin: 0;"><strong>Alergias / restricciones:</strong> ${escapeHtml(restrictions)}</p>
       </div>`;
@@ -236,10 +262,12 @@ function buildEmailText(data: NormalizedRsvp & { sentAt: string }): string {
   const guestLines = data.guests.map((guest, index) => {
     const restrictions = getGuestRestrictionsText(guest, data.attendance);
     const childMeal = getGuestChildMealText(guest, data.attendance);
+    const busUse = getGuestBusText(guest, data.attendance);
     const guestAttendance = getGuestAttendanceLabel(data.attendance);
     return [
       `Invitado ${index + 1}: ${guest.name}`,
       `  Estado: ${guestAttendance}`,
+      `  Autobús privado: ${busUse}`,
       `  Invitado niño: ${childMeal}`,
       `  Alergias / restricciones: ${restrictions}`,
     ].join("\n");

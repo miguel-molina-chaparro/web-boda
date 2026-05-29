@@ -57,6 +57,7 @@ export function RSVPSection() {
           name: "",
           isChild: false,
           childMealChoice: null,
+          willUsePrivateBus: null,
           hasDietaryRestrictions: null,
           dietaryRestrictions: {
             glutenFree: false,
@@ -85,6 +86,7 @@ export function RSVPSection() {
     guests.forEach((_, index) => {
       setValue(`guests.${index}.isChild`, false, { shouldValidate: false });
       setValue(`guests.${index}.childMealChoice`, null, { shouldValidate: false });
+      setValue(`guests.${index}.willUsePrivateBus`, null, { shouldValidate: false });
       setValue(`guests.${index}.hasDietaryRestrictions`, null, { shouldValidate: false });
       setValue(
         `guests.${index}.dietaryRestrictions`,
@@ -140,6 +142,7 @@ export function RSVPSection() {
         const name = guest.name.trim();
         const isChild = guest.isChild;
         const childMealChoice = isChild ? guest.childMealChoice : null;
+        const willUsePrivateBus = data.asistira === "si" ? guest.willUsePrivateBus : "no";
         const hasDietaryRestrictions =
           data.asistira === "si" ? guest.hasDietaryRestrictions : "no";
         if (hasDietaryRestrictions === "no") {
@@ -147,6 +150,7 @@ export function RSVPSection() {
             name,
             isChild,
             childMealChoice,
+            willUsePrivateBus,
             hasDietaryRestrictions: "no" as const,
             dietaryRestrictions: null,
           };
@@ -155,6 +159,7 @@ export function RSVPSection() {
           name,
           isChild,
           childMealChoice,
+          willUsePrivateBus,
           hasDietaryRestrictions: "si" as const,
           dietaryRestrictions: {
             glutenFree: guest.dietaryRestrictions.glutenFree,
@@ -297,6 +302,9 @@ export function RSVPSection() {
                   const isChild = guest?.isChild === true;
                   const hasRestrictions = guest?.hasDietaryRestrictions === "si";
                   const guestName = guest?.name?.trim();
+                  const busQuestion = guestName
+                    ? `${rsvpTexts.busQuestionPrefix}${guestName}${rsvpTexts.busQuestionSuffix}`
+                    : rsvpTexts.busQuestionFallback;
                   const dietaryQuestion = guestName
                     ? `${rsvpTexts.dietaryQuestionPrefix}${guestName}${rsvpTexts.dietaryQuestionSuffix}`
                     : rsvpTexts.dietaryQuestionFallback;
@@ -399,6 +407,45 @@ export function RSVPSection() {
 
                       {shouldShowDietary && (
                         <>
+                          <div className="space-y-3">
+                            <div className="flex items-start gap-2">
+                              <label className="block text-sm font-medium text-[var(--text-primary)]">
+                                {busQuestion}
+                              </label>
+                            </div>
+                            <div className="flex flex-wrap gap-6">
+                              <label className="flex cursor-pointer items-center gap-2">
+                                <input
+                                  type="radio"
+                                  value="si"
+                                  className="peer sr-only"
+                                  {...register(`guests.${index}.willUsePrivateBus`)}
+                                />
+                                <span className="h-4 w-4 shrink-0 rounded-full border-2 border-[var(--border-soft)] transition-colors peer-checked:border-[var(--text-primary)] peer-checked:bg-[var(--text-primary)]" />
+                                <span className="text-sm text-[var(--text-primary)]">
+                                  {rsvpTexts.busYes}
+                                </span>
+                              </label>
+                              <label className="flex cursor-pointer items-center gap-2">
+                                <input
+                                  type="radio"
+                                  value="no"
+                                  className="peer sr-only"
+                                  {...register(`guests.${index}.willUsePrivateBus`)}
+                                />
+                                <span className="h-4 w-4 shrink-0 rounded-full border-2 border-[var(--border-soft)] transition-colors peer-checked:border-[var(--text-primary)] peer-checked:bg-[var(--text-primary)]" />
+                                <span className="text-sm text-[var(--text-primary)]">
+                                  {rsvpTexts.busNo}
+                                </span>
+                              </label>
+                            </div>
+                            {errors.guests?.[index]?.willUsePrivateBus && (
+                              <p className="rsvp-error text-xs text-[var(--text-muted)]">
+                                {errors.guests[index]?.willUsePrivateBus?.message}
+                              </p>
+                            )}
+                          </div>
+
                           <div className="space-y-3">
                             <div className="flex items-start gap-2">
                               <AlertTriangle
@@ -524,6 +571,7 @@ export function RSVPSection() {
                         name: "",
                         isChild: false,
                         childMealChoice: null,
+                        willUsePrivateBus: null,
                         hasDietaryRestrictions: null,
                         dietaryRestrictions: {
                           glutenFree: false,

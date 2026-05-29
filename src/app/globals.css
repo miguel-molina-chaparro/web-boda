@@ -2,6 +2,7 @@
 
 /* ── Wedding palette (marfil / verde eucalipto) ──────────────────────────── */
 :root {
+  color-scheme: light;
   /* Nueva paleta base */
   --color-primary: #6b8f8a;
   --color-primary-dark: #4f6f6a;
@@ -33,10 +34,12 @@
 
 /* Ensure smooth scroll (backup for html.scroll-smooth) */
 html {
+  color-scheme: light;
   scroll-behavior: smooth;
 }
 
 body {
+  color-scheme: light;
   background: var(--background);
   color: var(--text-primary);
   font-family: var(--font-sans);
