@@ -1,12 +1,27 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { DM_Serif_Display } from "next/font/google";
+import localFont from "next/font/local";
 import { couple, hero, flags } from "@/config/wedding";
 
-const fontHeroSerifEditorial = DM_Serif_Display({
-  weight: "400",
-  subsets: ["latin"],
+const fontParisienne = localFont({
+  src: "../../fonts/Parisienne-Regular.ttf",
+  display: "swap",
+});
+
+const fontGreatVibes = localFont({
+  src: "../../fonts/GreatVibes-Regular.ttf",
+  display: "swap",
+});
+
+const fontGistesy = localFont({
+  src: "../../fonts/Gistesy.ttf",
+  display: "swap",
+});
+
+const fontMigraMedium = localFont({
+  src: "../../fonts/Migra-Medium.ttf",
+  display: "swap",
 });
 
 const easeElegant = [0.25, 0.46, 0.45, 0.94] as const;
@@ -46,6 +61,13 @@ const itemVariantsReduced = {
   },
 };
 
+function toCapitalizedEs(value: string): string {
+  const trimmed = value.trim();
+  if (!trimmed) return trimmed;
+  const lower = trimmed.toLocaleLowerCase("es-ES");
+  return lower.charAt(0).toLocaleUpperCase("es-ES") + lower.slice(1);
+}
+
 export function HeroSection() {
   const reduceMotion = useReducedMotion();
   const noAnimation = !flags.enableAnimations || reduceMotion;
@@ -61,12 +83,12 @@ export function HeroSection() {
 
   /* Eje central de la página pasa entre el 2 y el 0: "JUNIO | " + "20" + " | SÁBADO" */
   const dateLineParts = hero.dateLine.split(" | ");
-  const dateLeft = dateLineParts[0] ? `${dateLineParts[0]} | ` : "";
+  const dateMonth = toCapitalizedEs(dateLineParts[0] ?? "Junio");
   const dateCenter = dateLineParts[1] ?? "20";
-  const dateRight = dateLineParts[2] ? ` | ${dateLineParts[2]}` : "";
+  const dateWeekday = toCapitalizedEs(dateLineParts[2] ?? "Sábado");
 
   const dateLineClass =
-    "font-serif text-lg sm:text-xl md:text-2xl uppercase tracking-[0.2em] sm:tracking-[0.25em] text-[var(--text-primary)]";
+    "font-serif text-lg sm:text-xl md:text-2xl tracking-[0.2em] sm:tracking-[0.25em] text-[var(--text-primary)]";
 
   if (noAnimation) {
     return (
@@ -76,45 +98,55 @@ export function HeroSection() {
       >
         <div className={heroBlockClass}>
           <p
-            className={`${fontHeroSerifEditorial.className} block w-max mx-auto text-[var(--text-primary)] text-2xl sm:text-3xl md:text-4xl mb-1`}
+            className={`${fontParisienne.className} block w-max mx-auto text-[var(--text-primary)] text-2xl sm:text-3xl md:text-4xl mb-1`}
           >
             {hero.saveTheDate}
           </p>
           <h1
-            className="flex flex-col items-center gap-2 sm:gap-2.5 text-[var(--text-primary)] mt-4 sm:mt-5 md:mt-6 leading-[1.02] text-5xl sm:text-6xl md:text-7xl lg:text-8xl w-max mx-auto"
-            style={{ fontFamily: "var(--font-script)" }}
+            className={`${fontGreatVibes.className} flex flex-col items-center gap-5 sm:gap-6 text-[var(--text-primary)] mt-4 sm:mt-5 md:mt-6 leading-[1.12] md:leading-[1.05] text-4xl sm:text-5xl md:text-6xl lg:text-7xl w-max mx-auto`}
             aria-label={`${couple.name1} y ${couple.name2}`}
           >
             <span className="block w-max mx-auto">{couple.name1}</span>
-            <span className="block w-max mx-auto my-0.5 sm:my-1 text-4xl sm:text-5xl md:text-6xl lg:text-7xl">&</span>
+            <span className="block w-max mx-auto text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-none">
+              y
+            </span>
             <span className="block w-max mx-auto">{couple.name2}</span>
           </h1>
           <p
-            className={`${fontHeroSerifEditorial.className} block w-max mx-auto text-[var(--text-primary)] text-2xl sm:text-3xl md:text-4xl mt-5 sm:mt-6 md:mt-8`}
+            className={`${fontParisienne.className} block w-max mx-auto text-[var(--text-primary)] text-2xl sm:text-3xl md:text-4xl mt-5 sm:mt-6 md:mt-8`}
           >
             {hero.weAreGettingMarried}
           </p>
           <div className="flex flex-col items-center w-full mt-10 sm:mt-12 md:mt-14">
             <div className="flex flex-col items-center text-center sm:hidden">
-              <p className="font-serif text-lg uppercase tracking-[0.2em] text-[var(--text-primary)]">
-                {dateLineParts[0] ?? "JUNIO"}
+              <p className="font-serif text-lg tracking-[0.2em] text-[var(--text-primary)]">
+                <span className={fontGistesy.className}>{dateMonth}</span>
               </p>
               <p className="font-serif text-lg uppercase tracking-[0.2em] text-[var(--text-primary)] leading-tight">
-                | {dateCenter} |
+                | <span className={fontMigraMedium.className}>{dateCenter}</span> |
               </p>
-              <p className="font-serif text-lg uppercase tracking-[0.2em] text-[var(--text-primary)]">
-                {dateLineParts[2] ?? "SÁBADO"}
+              <p className="font-serif text-lg tracking-[0.2em] text-[var(--text-primary)]">
+                <span className={fontGistesy.className}>{dateWeekday}</span>
               </p>
             </div>
             <div
               className={`hidden sm:grid grid-cols-[1fr_auto_1fr] w-full items-center gap-0 ${dateLineClass}`}
               style={{ fontFamily: "var(--font-serif)" }}
             >
-              <span className="text-right pr-0.5">{dateLeft}</span>
-              <span className="text-center tabular-nums">{dateCenter}</span>
-              <span className="text-left pl-0.5">{dateRight}</span>
+              <span className="text-right pr-0.5">
+                <span className={fontGistesy.className}>{dateMonth}</span> |{" "}
+              </span>
+              <span className={`text-center tabular-nums ${fontMigraMedium.className}`}>
+                {dateCenter}
+              </span>
+              <span className="text-left pl-0.5">
+                {" | "}
+                <span className={fontGistesy.className}>{dateWeekday}</span>
+              </span>
             </div>
-            <p className="block w-max mx-auto font-serif text-base sm:text-lg md:text-xl uppercase tracking-[0.2em] sm:tracking-[0.25em] text-[var(--text-primary)] mt-1.5">
+            <p
+              className={`${fontMigraMedium.className} block w-max mx-auto font-serif text-base sm:text-lg md:text-xl uppercase tracking-[0.2em] sm:tracking-[0.25em] text-[var(--text-primary)] mt-1.5`}
+            >
               {hero.year}
             </p>
           </div>
@@ -151,30 +183,27 @@ export function HeroSection() {
       >
         <motion.p
           variants={variants}
-          className={`${fontHeroSerifEditorial.className} block w-max mx-auto text-[var(--text-primary)] text-2xl sm:text-3xl md:text-4xl mb-1`}
+          className={`${fontParisienne.className} block w-max mx-auto text-[var(--text-primary)] text-2xl sm:text-3xl md:text-4xl mb-1`}
         >
           {hero.saveTheDate}
         </motion.p>
 
         <motion.p
           variants={variants}
-          className="block w-max mx-auto text-[var(--text-primary)] mt-4 sm:mt-5 md:mt-6 leading-[1.02] text-5xl sm:text-6xl md:text-7xl lg:text-8xl"
-          style={{ fontFamily: "var(--font-script)" }}
+          className={`${fontGreatVibes.className} block w-max mx-auto text-[var(--text-primary)] mt-4 sm:mt-5 md:mt-6 leading-[1.12] md:leading-[1.05] text-4xl sm:text-5xl md:text-6xl lg:text-7xl`}
         >
           {couple.name1}
         </motion.p>
         <motion.p
           variants={variants}
-          className="block w-max mx-auto my-0.5 sm:my-1 text-[var(--text-primary)] leading-none text-4xl sm:text-5xl md:text-6xl lg:text-7xl"
-          style={{ fontFamily: "var(--font-script)" }}
+          className={`${fontGreatVibes.className} block w-max mx-auto my-3 sm:my-4 text-[var(--text-primary)] leading-none text-3xl sm:text-4xl md:text-5xl lg:text-6xl`}
           aria-hidden
         >
-          &
+          y
         </motion.p>
         <motion.h1
           variants={variants}
-          className="block w-max mx-auto text-[var(--text-primary)] leading-[0.95] text-5xl sm:text-6xl md:text-7xl lg:text-8xl"
-          style={{ fontFamily: "var(--font-script)" }}
+          className={`${fontGreatVibes.className} block w-max mx-auto text-[var(--text-primary)] mt-1 sm:mt-2 leading-[1.1] md:leading-[1.03] text-4xl sm:text-5xl md:text-6xl lg:text-7xl`}
           aria-label={`${couple.name1} y ${couple.name2}`}
         >
           {couple.name2}
@@ -182,35 +211,42 @@ export function HeroSection() {
 
         <motion.p
           variants={variants}
-          className={`${fontHeroSerifEditorial.className} block w-max mx-auto text-[var(--text-primary)] text-2xl sm:text-3xl md:text-4xl mt-5 sm:mt-6 md:mt-8`}
+          className={`${fontParisienne.className} block w-max mx-auto text-[var(--text-primary)] text-2xl sm:text-3xl md:text-4xl mt-5 sm:mt-6 md:mt-8`}
         >
           {hero.weAreGettingMarried}
         </motion.p>
 
         <motion.div variants={variants} className="flex flex-col items-center w-full mt-10 sm:mt-12 md:mt-14">
           <div className="flex flex-col items-center text-center sm:hidden">
-            <p className="font-serif text-lg uppercase tracking-[0.2em] text-[var(--text-primary)]">
-              {dateLineParts[0] ?? "JUNIO"}
+            <p className="font-serif text-lg tracking-[0.2em] text-[var(--text-primary)]">
+              <span className={fontGistesy.className}>{dateMonth}</span>
             </p>
             <p className="font-serif text-lg uppercase tracking-[0.2em] text-[var(--text-primary)] leading-tight">
-              | {dateCenter} |
+              | <span className={fontMigraMedium.className}>{dateCenter}</span> |
             </p>
-            <p className="font-serif text-lg uppercase tracking-[0.2em] text-[var(--text-primary)]">
-              {dateLineParts[2] ?? "SÁBADO"}
+            <p className="font-serif text-lg tracking-[0.2em] text-[var(--text-primary)]">
+              <span className={fontGistesy.className}>{dateWeekday}</span>
             </p>
           </div>
           <div
             className={`hidden sm:grid grid-cols-[1fr_auto_1fr] w-full items-center gap-0 ${dateLineClass}`}
             style={{ fontFamily: "var(--font-serif)" }}
           >
-            <span className="text-right pr-0.5">{dateLeft}</span>
-            <span className="text-center tabular-nums">{dateCenter}</span>
-            <span className="text-left pl-0.5">{dateRight}</span>
+            <span className="text-right pr-0.5">
+              <span className={fontGistesy.className}>{dateMonth}</span> |{" "}
+            </span>
+            <span className={`text-center tabular-nums ${fontMigraMedium.className}`}>
+              {dateCenter}
+            </span>
+            <span className="text-left pl-0.5">
+              {" | "}
+              <span className={fontGistesy.className}>{dateWeekday}</span>
+            </span>
           </div>
         </motion.div>
         <motion.p
           variants={variants}
-          className="block w-max mx-auto font-serif text-base sm:text-lg md:text-xl uppercase tracking-[0.2em] sm:tracking-[0.25em] text-[var(--text-primary)] mt-1.5"
+          className={`${fontMigraMedium.className} block w-max mx-auto font-serif text-base sm:text-lg md:text-xl uppercase tracking-[0.2em] sm:tracking-[0.25em] text-[var(--text-primary)] mt-1.5`}
         >
           {hero.year}
         </motion.p>

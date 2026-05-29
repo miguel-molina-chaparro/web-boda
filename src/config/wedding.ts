@@ -35,7 +35,7 @@ export const weddingDateObj = new Date(
 export const weddingDateFormatted = "20 de junio de 2026";
 
 /** Línea de fecha para hero (ej. "JUNIO | 20 | SÁBADO") */
-export const heroDateLine = "JUNIO | 20 | SÁBADO";
+export const heroDateLine = "Junio | 20 | Sábado";
 
 /** Año para hero */
 export const heroYear = "2026";
