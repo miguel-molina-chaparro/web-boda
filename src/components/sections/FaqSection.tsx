@@ -92,8 +92,10 @@ export function FaqSection() {
                 aria-label={`Mostrar ${flippedCards[index] ? "pregunta" : "respuesta"}: ${item.question}`}
               >
                 <div
-                  className="relative min-h-[320px] sm:min-h-[280px] md:min-h-[250px] transition-transform duration-[1400ms] [transform-style:preserve-3d]"
-                  style={{ transform: flippedCards[index] ? "rotateY(180deg)" : "rotateY(0deg)" }}
+                  className="relative min-h-[420px] sm:min-h-[360px] md:min-h-[320px] transition-transform duration-[1400ms] [transform-style:preserve-3d]"
+                  style={{
+                    transform: flippedCards[index] ? "rotateY(180deg)" : "rotateY(0deg)",
+                  }}
                 >
                   <div className="absolute inset-0 rounded-lg border border-[var(--border-soft)]/70 bg-[var(--background-card)] px-4 py-5 sm:px-5 sm:py-6 [backface-visibility:hidden]">
                     <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
@@ -114,7 +116,7 @@ export function FaqSection() {
                   </div>
 
                   <div className="absolute inset-0 rounded-lg border border-[var(--border-soft)]/70 bg-[var(--background-card)] px-4 py-5 sm:px-5 sm:py-6 [backface-visibility:hidden] [transform:rotateY(180deg)]">
-                    <div className="flex h-full flex-col justify-center">
+                    <div className="flex h-full flex-col justify-center overflow-y-auto pr-1">
                       <p className="text-[15px] sm:text-base leading-relaxed text-[var(--text-muted)] text-center sm:text-left">
                         {item.answer}
                       </p>
