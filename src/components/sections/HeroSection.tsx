@@ -14,8 +14,8 @@ const fontGreatVibes = localFont({
   display: "swap",
 });
 
-const fontGistesy = localFont({
-  src: "../../fonts/Gistesy.ttf",
+const fontSacramento = localFont({
+  src: "../../fonts/Sacramento-Regular.ttf",
   display: "swap",
 });
 
@@ -73,8 +73,8 @@ export function HeroSection() {
   const noAnimation = !flags.enableAnimations || reduceMotion;
   const variants = noAnimation ? itemVariantsReduced : itemVariants;
 
-  const scrollToCountdown = () => {
-    document.getElementById("countdown")?.scrollIntoView({ behavior: "smooth" });
+  const scrollToVideo = () => {
+    document.getElementById("video")?.scrollIntoView({ behavior: "smooth" });
   };
 
   /* Contenedor único: flex column, centrado estricto. Sin max-width ni padding que rompan el eje. */
@@ -120,13 +120,13 @@ export function HeroSection() {
           <div className="flex flex-col items-center w-full mt-10 sm:mt-12 md:mt-14">
             <div className="flex flex-col items-center text-center sm:hidden">
               <p className="font-serif text-lg tracking-[0.2em] text-[var(--text-primary)]">
-                <span className={fontGistesy.className}>{dateMonth}</span>
+                <span className={fontSacramento.className}>{dateMonth}</span>
               </p>
               <p className="font-serif text-lg uppercase tracking-[0.2em] text-[var(--text-primary)] leading-tight">
                 | <span className={fontMigraMedium.className}>{dateCenter}</span> |
               </p>
               <p className="font-serif text-lg tracking-[0.2em] text-[var(--text-primary)]">
-                <span className={fontGistesy.className}>{dateWeekday}</span>
+                <span className={fontSacramento.className}>{dateWeekday}</span>
               </p>
             </div>
             <div
@@ -134,14 +134,14 @@ export function HeroSection() {
               style={{ fontFamily: "var(--font-serif)" }}
             >
               <span className="text-right pr-0.5">
-                <span className={fontGistesy.className}>{dateMonth}</span> |{" "}
+                <span className={fontSacramento.className}>{dateMonth}</span> |{" "}
               </span>
               <span className={`text-center tabular-nums ${fontMigraMedium.className}`}>
                 {dateCenter}
               </span>
               <span className="text-left pl-0.5">
                 {" | "}
-                <span className={fontGistesy.className}>{dateWeekday}</span>
+                <span className={fontSacramento.className}>{dateWeekday}</span>
               </span>
             </div>
             <p
@@ -153,7 +153,7 @@ export function HeroSection() {
         </div>
         <button
           type="button"
-          onClick={scrollToCountdown}
+          onClick={scrollToVideo}
           className="focus-ring absolute bottom-[max(2rem,env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 flex min-h-[44px] min-w-[44px] flex-col items-center justify-center gap-0.5 rounded text-[var(--text-muted)] transition-colors hover:text-[var(--text-primary)]"
           aria-label={hero.ctaAriaLabel}
         >
@@ -219,13 +219,13 @@ export function HeroSection() {
         <motion.div variants={variants} className="flex flex-col items-center w-full mt-10 sm:mt-12 md:mt-14">
           <div className="flex flex-col items-center text-center sm:hidden">
             <p className="font-serif text-lg tracking-[0.2em] text-[var(--text-primary)]">
-              <span className={fontGistesy.className}>{dateMonth}</span>
+              <span className={fontSacramento.className}>{dateMonth}</span>
             </p>
             <p className="font-serif text-lg uppercase tracking-[0.2em] text-[var(--text-primary)] leading-tight">
               | <span className={fontMigraMedium.className}>{dateCenter}</span> |
             </p>
             <p className="font-serif text-lg tracking-[0.2em] text-[var(--text-primary)]">
-              <span className={fontGistesy.className}>{dateWeekday}</span>
+              <span className={fontSacramento.className}>{dateWeekday}</span>
             </p>
           </div>
           <div
@@ -233,14 +233,14 @@ export function HeroSection() {
             style={{ fontFamily: "var(--font-serif)" }}
           >
             <span className="text-right pr-0.5">
-              <span className={fontGistesy.className}>{dateMonth}</span> |{" "}
+              <span className={fontSacramento.className}>{dateMonth}</span> |{" "}
             </span>
             <span className={`text-center tabular-nums ${fontMigraMedium.className}`}>
               {dateCenter}
             </span>
             <span className="text-left pl-0.5">
               {" | "}
-              <span className={fontGistesy.className}>{dateWeekday}</span>
+              <span className={fontSacramento.className}>{dateWeekday}</span>
             </span>
           </div>
         </motion.div>
@@ -254,7 +254,7 @@ export function HeroSection() {
 
       <button
         type="button"
-        onClick={scrollToCountdown}
+        onClick={scrollToVideo}
         className="focus-ring absolute bottom-[max(2rem,env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 flex min-h-[44px] min-w-[44px] flex-col items-center justify-center gap-0.5 rounded text-[var(--text-muted)] transition-colors hover:text-[var(--text-primary)]"
         aria-label={hero.ctaAriaLabel}
       >
