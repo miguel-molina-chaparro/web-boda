@@ -45,18 +45,18 @@ export function FaqSection() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.16,
-        delayChildren: 0.12,
+        staggerChildren: 0.3,
+        delayChildren: 0.25,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 26 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.85, ease: [0.25, 0.46, 0.45, 0.94] as const },
+      transition: { duration: 1.4, ease: [0.25, 0.46, 0.45, 0.94] as const },
     },
   };
 
@@ -92,7 +92,7 @@ export function FaqSection() {
                 aria-label={`Mostrar ${flippedCards[index] ? "pregunta" : "respuesta"}: ${item.question}`}
               >
                 <div
-                  className="relative min-h-[320px] sm:min-h-[280px] md:min-h-[250px] transition-transform duration-700 [transform-style:preserve-3d]"
+                  className="relative min-h-[320px] sm:min-h-[280px] md:min-h-[250px] transition-transform duration-[1400ms] [transform-style:preserve-3d]"
                   style={{ transform: flippedCards[index] ? "rotateY(180deg)" : "rotateY(0deg)" }}
                 >
                   <div className="absolute inset-0 rounded-lg border border-[var(--border-soft)]/70 bg-[var(--background-card)] px-4 py-5 sm:px-5 sm:py-6 [backface-visibility:hidden]">
