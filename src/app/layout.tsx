@@ -29,6 +29,7 @@ const fontSans = Lato({
 export const metadata: Metadata = {
   title: "Save the date",
   description: "Invitación a nuestra boda",
+  themeColor: "#faf8f6",
 };
 
 export default function RootLayout({
@@ -37,9 +38,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className="scroll-smooth" style={{ colorScheme: "light" }}>
+    <html lang="es" className="scroll-smooth" style={{ colorScheme: "only light" }}>
       <head>
-        <meta name="color-scheme" content="light only" />
+        <meta name="color-scheme" content="light" />
+        <meta name="supported-color-schemes" content="light" />
+        <meta name="theme-color" content="#faf8f6" />
       </head>
       <body
         className={`${fontScript.variable} ${fontSerif.variable} ${fontSans.variable} font-sans antialiased`}

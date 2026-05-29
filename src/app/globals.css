@@ -2,7 +2,7 @@
 
 /* ── Wedding palette (marfil / verde eucalipto) ──────────────────────────── */
 :root {
-  color-scheme: light;
+  color-scheme: only light !important;
   /* Nueva paleta base */
   --color-primary: #6b8f8a;
   --color-primary-dark: #4f6f6a;
@@ -34,15 +34,36 @@
 
 /* Ensure smooth scroll (backup for html.scroll-smooth) */
 html {
-  color-scheme: light;
+  color-scheme: only light !important;
+  forced-color-adjust: none;
   scroll-behavior: smooth;
 }
 
 body {
-  color-scheme: light;
+  color-scheme: only light !important;
+  forced-color-adjust: none;
   background: var(--background);
   color: var(--text-primary);
   font-family: var(--font-sans);
+}
+
+/* Refuerzo anti-dark-mode automático en navegadores móviles */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: only light !important;
+    --background: #faf8f6;
+    --background-card: #fefdfb;
+    --text-primary: var(--color-primary-dark);
+    --accent-rose: var(--color-primary);
+    --text-muted: var(--color-muted);
+    --border-soft: var(--color-border);
+  }
+
+  html,
+  body {
+    background: #faf8f6 !important;
+    color: var(--color-primary-dark) !important;
+  }
 }
 
 /* ── Utility: section padding (consistente entre secciones) ───────────────── */
