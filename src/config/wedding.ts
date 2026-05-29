@@ -10,7 +10,7 @@ export const couple = {
 } as const;
 
 /** Nombre formateado para mostrar (ej. "Miguel & Maria Jose") */
-export const coupleDisplayName = `${couple.name1} & ${couple.name2}`;
+export const coupleDisplayName = `${couple.name1} y ${couple.name2}`;
 
 /** Fecha de la boda (mes 0-indexed para Date: 5 = junio) */
 export const weddingDate = {
@@ -46,7 +46,7 @@ export const hero = {
   weAreGettingMarried: "¡Nos casamos!",
   dateLine: heroDateLine,
   year: heroYear,
-  ctaLabel: "Desliza y vívelo con nosotros",
+  ctaLabel: "Pulsa aquí y vívelo con nosotros",
   ctaAriaLabel: "Ir a cuenta atrás",
 } as const;
 
@@ -103,7 +103,7 @@ export const scheduleEvents: ReadonlyArray<{
 
 /** Textos de la sección lugar */
 export const locationTexts = {
-  title: "La ceremonia",
+  title: "Ceremonia",
   subtitle: "Donde diremos sí, quiero",
   openInMaps: "Abrir en Maps",
   addToCalendar: "Añadir al calendario",
@@ -132,8 +132,8 @@ export const conviteMap = {
 
 /** Textos de la sección convite */
 export const conviteTexts = {
-  title: "La celebración",
-  subtitle: "Donde compartiremos el banquete y la fiesta",
+  title: "Celebración",
+  subtitle: "Donde brindaremos, compartiremos y bailaremos hasta el final de la noche",
   openInMaps: locationTexts.openInMaps,
   addToCalendar: locationTexts.addToCalendar,
 } as const;
