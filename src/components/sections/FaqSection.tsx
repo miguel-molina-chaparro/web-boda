@@ -67,7 +67,7 @@ export function FaqSection() {
         </p>
 
         <motion.div
-          className="mx-auto mt-10 sm:mt-12 max-w-3xl space-y-5 sm:space-y-6 text-left"
+          className="mx-auto mt-10 sm:mt-12 max-w-4xl space-y-5 sm:space-y-6 text-left"
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
@@ -76,11 +76,11 @@ export function FaqSection() {
             <motion.div
               key={item.question}
               variants={itemVariants}
-              className="rounded-lg border border-[var(--border-soft)]/70 bg-[var(--background-card)] p-4 sm:p-5 md:p-6"
+              className="rounded-lg border border-[var(--border-soft)]/70 bg-[var(--background-card)] px-4 py-4 sm:p-5 md:p-6"
             >
-              <div className="flex items-start gap-3 sm:gap-4">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-4">
                 <span
-                  className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
                   style={{
                     backgroundColor: "rgba(205, 191, 230, 0.4)",
                     color: "var(--text-primary)",
@@ -89,11 +89,11 @@ export function FaqSection() {
                 >
                   <item.icon className="h-5 w-5" strokeWidth={1.8} />
                 </span>
-                <div>
+                <div className="w-full min-w-0">
                   <h3 className="text-base sm:text-lg font-semibold text-[var(--text-primary)]">
                     {item.question}
                   </h3>
-                  <p className="mt-2 text-sm sm:text-base leading-relaxed text-[var(--text-muted)]">
+                  <p className="mt-2 text-[15px] sm:text-base leading-relaxed text-[var(--text-muted)]">
                     {item.answer}
                   </p>
                 </div>
