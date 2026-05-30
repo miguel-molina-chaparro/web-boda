@@ -228,7 +228,7 @@ export function RSVPSection() {
           <form
             ref={formRef}
             onSubmit={handleSubmit(onSubmit)}
-            className="rsvp-form-card mx-auto w-full max-w-lg rounded-lg border border-[var(--border-soft)] bg-[var(--background-card)] p-4 text-left shadow-[var(--shadow-soft)] sm:p-6 md:p-8"
+            className="rsvp-form-card mx-auto w-[calc(100%+1rem)] -mx-2 max-w-lg rounded-lg border border-[var(--border-soft)] bg-[var(--background-card)] p-4 text-left shadow-[var(--shadow-soft)] sm:mx-auto sm:w-full sm:p-6 md:p-8"
           >
             <div className="space-y-5 sm:space-y-6">
               {/* Email */}

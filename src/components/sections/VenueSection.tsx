@@ -45,7 +45,7 @@ export function VenueSection({
           {subtitle}
         </p>
 
-        <div className="location-card mt-8 sm:mt-10 md:mt-12 mx-auto max-w-3xl">
+        <div className="location-card mt-8 sm:mt-10 md:mt-12 mx-auto w-[calc(100%+1rem)] -mx-2 max-w-3xl sm:w-full sm:mx-auto">
           <div className="relative w-full aspect-[16/10] overflow-hidden">
             <Image
               src={imageSrc}

@@ -48,7 +48,7 @@ export default function RootLayout({
         className={`${fontScript.variable} ${fontSerif.variable} ${fontSans.variable} font-sans antialiased`}
       >
         <DecorativeSideImages />
-        <div className="relative z-10 min-h-screen ml-[92px] mr-[92px] sm:ml-[180px] sm:mr-[180px] md:ml-[260px] md:mr-[260px] lg:ml-[300px] lg:mr-[300px]">
+        <div className="relative z-10 min-h-screen ml-[72px] mr-[72px] sm:ml-[168px] sm:mr-[168px] md:ml-[248px] md:mr-[248px] lg:ml-[288px] lg:mr-[288px]">
           {children}
         </div>
         <AudioToggle />
