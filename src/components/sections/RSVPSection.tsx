@@ -106,6 +106,13 @@ export function RSVPSection() {
 
   const isSending = submitStatus === "loading";
 
+  const onInvalid = () => {
+    setSubmitStatus("error");
+    setSubmitError(
+      'Faltan campos obligatorios por completar. Revisa los mensajes en rojo y pulsa de nuevo "Enviar confirmación".'
+    );
+  };
+
   const onSubmit = async (data: RsvpFormData) => {
     clearErrors("guests");
     if (data.asistira === "si") {
@@ -227,7 +234,7 @@ export function RSVPSection() {
         >
           <form
             ref={formRef}
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={handleSubmit(onSubmit, onInvalid)}
             className="rsvp-form-card mx-auto w-[calc(100%+1rem)] -mx-2 max-w-lg rounded-lg border border-[var(--border-soft)] bg-[var(--background-card)] p-4 text-left shadow-[var(--shadow-soft)] sm:mx-auto sm:w-full sm:p-6 md:p-8"
           >
             <div className="space-y-5 sm:space-y-6">
@@ -243,7 +250,7 @@ export function RSVPSection() {
                   {...register("email")}
                 />
                 {errors.email && (
-                  <p className="rsvp-error text-xs text-[var(--text-muted)]">
+                  <p className="rsvp-error text-xs font-medium text-red-600">
                     {errors.email.message}
                   </p>
                 )}
@@ -281,7 +288,7 @@ export function RSVPSection() {
                   </label>
                 </div>
                 {errors.asistira && (
-                  <p className="rsvp-error text-xs text-[var(--text-muted)]">
+                  <p className="rsvp-error text-xs font-medium text-red-600">
                     {errors.asistira.message}
                   </p>
                 )}
@@ -336,7 +343,7 @@ export function RSVPSection() {
                           {...register(`guests.${index}.name`)}
                         />
                         {errors.guests?.[index]?.name && (
-                          <p className="rsvp-error text-xs text-[var(--text-muted)]">
+                          <p className="rsvp-error text-xs font-medium text-red-600">
                             {errors.guests[index]?.name?.message}
                           </p>
                         )}
@@ -396,7 +403,7 @@ export function RSVPSection() {
                                 </label>
                               </div>
                               {errors.guests?.[index]?.childMealChoice && (
-                                <p className="rsvp-error text-xs text-[var(--text-muted)]">
+                                <p className="rsvp-error text-xs font-medium text-red-600">
                                   {errors.guests[index]?.childMealChoice?.message}
                                 </p>
                               )}
@@ -440,7 +447,7 @@ export function RSVPSection() {
                               </label>
                             </div>
                             {errors.guests?.[index]?.willUsePrivateBus && (
-                              <p className="rsvp-error text-xs text-[var(--text-muted)]">
+                              <p className="rsvp-error text-xs font-medium text-red-600">
                                 {errors.guests[index]?.willUsePrivateBus?.message}
                               </p>
                             )}
@@ -506,7 +513,7 @@ export function RSVPSection() {
                               </label>
                             </div>
                             {errors.guests?.[index]?.hasDietaryRestrictions && (
-                              <p className="rsvp-error text-xs text-[var(--text-muted)]">
+                              <p className="rsvp-error text-xs font-medium text-red-600">
                                 {errors.guests[index]?.hasDietaryRestrictions?.message}
                               </p>
                             )}
@@ -547,7 +554,7 @@ export function RSVPSection() {
                                 />
                               </div>
                               {errors.guests?.[index]?.dietaryRestrictions?.message && (
-                                <p className="rsvp-error text-xs text-[var(--text-muted)]">
+                                <p className="rsvp-error text-xs font-medium text-red-600">
                                   {errors.guests[index]?.dietaryRestrictions?.message}
                                 </p>
                               )}
@@ -559,7 +566,7 @@ export function RSVPSection() {
                   );
                 })}
                 {errors.guests && typeof errors.guests.message === "string" && (
-                  <p className="rsvp-error text-xs text-[var(--text-muted)]">
+                  <p className="rsvp-error text-xs font-medium text-red-600">
                     {errors.guests.message}
                   </p>
                 )}
